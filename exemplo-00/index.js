@@ -1,4 +1,5 @@
 import tf from '@tensorflow/tfjs-node';
+
 async function trainModel(inputXs, outputYs) {
   const model = tf.sequential();
 
@@ -136,3 +137,11 @@ Exemplo: idade_min: 25, idade_max: 50, então (43 - 25) / (50 - 25) = 0,72
 const personTensorNormalized = [
   [0.72, 0, 0, 1, 0, 1, 0]
 ];
+
+const predictions = await predict(model, personTensorNormalized);
+const result = predictions
+  .sort((first, second) => second.prob - first.prob)
+  .map((person) => `${labelsNomes[person.index]} (${(person.prob * 100).toFixed(2)}%)`)
+  .join('\n')
+
+console.info(result);
