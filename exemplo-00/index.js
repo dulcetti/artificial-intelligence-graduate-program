@@ -115,5 +115,15 @@ const tensorLabels = [
 const inputXs = tf.tensor2d(tensorPessoasNormalizado)
 const outputYs = tf.tensor2d(tensorLabels)
 
-inputXs.print();
-outputYs.print();
+/*
+Quanto mais dado, melhor!
+Assim o algoritmo consegue entender melhor os padrões complexos
+*/
+const model = await trainModel(inputXs, outputYs);
+
+const person = {
+  nome: 'Dulcetti',
+  idade: 43,
+  cor: 'verde',
+  localizacao: 'Rio'
+};
