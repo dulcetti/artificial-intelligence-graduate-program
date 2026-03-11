@@ -127,3 +127,12 @@ const person = {
   cor: 'verde',
   localizacao: 'Rio'
 };
+
+/*
+Normalizando a idade da nova pessoa usando o mesmo padrão do treino
+Exemplo: idade_min: 25, idade_max: 50, então (43 - 25) / (50 - 25) = 0,72
+*/
+
+const personTensorNormalized = [
+  [0.72, 0, 0, 1, 0, 1, 0]
+];
