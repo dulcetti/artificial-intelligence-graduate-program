@@ -1,4 +1,72 @@
 import tf from '@tensorflow/tfjs-node';
+async function trainModel(inputXs, outputYs) {
+  const model = tf.sequential();
+
+  /*
+  Primeira camada da rede:
+  inputShape:
+  Entrada de 7 posições (idade normalizada + 3 cores + 3 localizações
+  
+  units:
+  80 neurônios = aqui coloquei tudo isso porque tem pouca base de treino
+  quanto mais neurônios, mais complexidade a rede pode aprender e, consequentemente, 
+  mais processamenta ela vai usar
+
+  A RelU age como um filtro:
+  É como se ela deixasse somente os dados interessantes seguirem viagem na rede
+  Se a informação chegou nesse neurônio é positiva, passa para frente
+  Se for zeroou negativa, pode jogar fora porque não serve para nada
+  */
+
+  model.add(tf.layers.dense({ inputShape: [7], units: 80, activation: 'relu' }));
+
+  /*
+  Saída: 3 neurônios
+  Um para cada categoria: basic, medium e premium
+  */
+  model.add(tf.layers.dense({ units: 3, activation: 'softmax' }));
+
+  /*
+  Compilando o modelo
+
+  optmizer: Adam (Adaptive Moment Estimation)
+  É um trabalhador pessoal moderno para redes neurais ajustando os pesos de forma eficiente e inteligente
+  Aprende com histórico de erros e acertos
+
+  loss: categoricalCrossentropy
+  Ele compara o que o modelo "acha" (os scores de cada categoria)
+  A categoria premium será sempre [1, 0, 0]
+
+  metrics:
+  Quanto mais distante da previsão do modelo de resposta correta, maior o erro (loss)
+  Exemplo clássico: classificação de imagem, recomendação, categorização de usuário
+  Qualquer coisa em que a resposta certa é "apenas uma entre várias possíveis"
+  */
+  model.compile({ optimizer: 'adam', loss: 'categoricalCrossentropy', metrics: ['accuracy'] });
+
+  /*
+  Treinamento do modelo
+  verbose: desabilita o log interno (e usa só callback)
+  epochs: quantidade de vezes que vai rodar no dataset
+  shuffle: embaralha os dados para evitar vieses
+  */
+  await model.fit(
+    inputXs,
+    outputYs,
+    {
+      verbose: 0,
+      epochs: 100,
+      shuffle: true,
+      callbacks: {
+        onEpochEnd: (epoch, log) => console.log(
+          `Epoch: ${epoch}: loss = ${log.loss}`
+        )
+      }
+    }
+  )
+
+  return model;
+}
 
 // Exemplo de pessoas para treino (cada pessoa com idade, cor e localização)
 // const pessoas = [
