@@ -68,6 +68,17 @@ async function trainModel(inputXs, outputYs) {
   return model;
 }
 
+async function predict(model, person) {
+  // Transformar o array js para o tensor (tfjs)
+  const tfInput = tf.tensor2d(person);
+
+  // Faz a predição (output será um vetor de 3 probabilidades)
+  const pred = model.predict(tfInput);
+  const predArray = await pred.array();
+
+   return predArray[0].map((prob, index) => ({ prob, index }));
+}
+
 // Exemplo de pessoas para treino (cada pessoa com idade, cor e localização)
 // const pessoas = [
 //     { nome: "Erick", idade: 30, cor: "azul", localizacao: "São Paulo" },
