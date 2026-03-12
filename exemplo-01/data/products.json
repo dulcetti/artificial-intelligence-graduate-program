@@ -4,69 +4,79 @@
         "name": "Fones de Ouvido Sem Fio",
         "category": "eletrônicos",
         "price": 129.99,
-        "color": "preto"
+        "color": "preto",
+        "seller": "Samsung"
     },
     {
         "id": 2,
         "name": "Relógio Inteligente",
         "category": "eletrônicos",
         "price": 199.99,
-        "color": "prata"
+        "color": "prata",
+        "seller": "Apple"
     },
     {
         "id": 3,
         "name": "Caixa de Som Bluetooth",
         "category": "eletrônicos",
         "price": 89.99,
-        "color": "azul"
+        "color": "azul",
+        "seller": "JBL"
     },
     {
         "id": 4,
         "name": "Camiseta Estampada",
         "category": "vestuário",
         "price": 49.99,
-        "color": "branco"
+        "color": "branco",
+        "seller": "Hering"
     },
     {
         "id": 5,
         "name": "Calça Jeans Slim",
         "category": "vestuário",
         "price": 99.99,
-        "color": "azul"
+        "color": "azul",
+        "seller": "Taco"
     },
     {
         "id": 6,
         "name": "Tênis Esportivo",
         "category": "calçados",
         "price": 149.99,
-        "color": "vermelho"
+        "color": "vermelho",
+        "seller": "Nike"
     },
     {
         "id": 7,
         "name": "Sandália Casual",
         "category": "calçados",
         "price": 69.99,
-        "color": "bege"
+        "color": "bege",
+        "seller": "Havaianas"
     },
     {
         "id": 8,
         "name": "Boné Estiloso",
         "category": "acessórios",
         "price": 39.99,
-        "color": "preto"
+        "color": "preto",
+        "seller": "Adidas"
     },
     {
         "id": 9,
         "name": "Mochila Executiva",
         "category": "acessórios",
         "price": 159.99,
-        "color": "cinza"
+        "color": "cinza",
+        "seller": "Bagaggio"
     },
     {
         "id": 10,
         "name": "Óculos de Sol",
         "category": "acessórios",
         "price": 89.99,
-        "color": "marrom"
+        "color": "marrom",
+        "seller": "Ray Ban"
     }
 ]
