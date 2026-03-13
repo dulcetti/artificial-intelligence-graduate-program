@@ -9,14 +9,16 @@
                 "name": "Fones de Ouvido Sem Fio",
                 "category": "eletrônicos",
                 "price": 129.99,
-                "color": "preto"
+                "color": "preto",
+                "seller": "Samsung"
             },
             {
                 "id": 2,
                 "name": "Relógio Inteligente",
                 "category": "eletrônicos",
                 "price": 199.99,
-                "color": "prata"
+                "color": "prata",
+                "seller": "Apple"
             }
         ]
     },
@@ -30,14 +32,16 @@
                 "name": "Fones de Ouvido Sem Fio",
                 "category": "eletrônicos",
                 "price": 129.99,
-                "color": "preto"
+                "color": "preto",
+                "seller": "Samsung"
             },
             {
                 "id": 3,
                 "name": "Caixa de Som Bluetooth",
                 "category": "eletrônicos",
                 "price": 89.99,
-                "color": "azul"
+                "color": "azul",
+                "seller": "JBL"
             }
         ]
     },
