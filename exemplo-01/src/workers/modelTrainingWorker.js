@@ -4,10 +4,9 @@ import { workerEvents } from '../events/constants.js';
 let _globalCtx = {};
 let _model = null;
 const WEIGHTS = {
-    category: 0.3,
-    color: 0.2,
+    category: 0.4,
+    color: 0.3,
     price: 0.2,
-    seller: 0.2,
     age: 0.1
 }
 
@@ -144,7 +143,7 @@ function createTrainingData(context) {
             const label = user.purchases.some((purchase) => purchase.name === product.name ? 1 : 0);
 
             // Combinar user e products
-            inputs.push([...userVector, productVector]);
+            inputs.push([...userVector, ...productVector]);
             labels.push(label);
         });
     });
@@ -198,7 +197,7 @@ const exampleUser = {
 // ====================================================================
 // 🧠 Configuração e treinamento da rede neural
 // ====================================================================
-function configureNeuralNetAndTrain(trainData) {
+async function configureNeuralNetAndTrain(trainData) {
     const model = tf.sequential();
 
     // Camada de entrada
@@ -214,6 +213,9 @@ function configureNeuralNetAndTrain(trainData) {
         })
     );
     
+    // Camada oculta 1
+    // - 64 neurônios (menos que a primeira camada: começa a comprimir informação)
+    // - activation: 'relu' (ainda extraindo combinações relevantes de features)
     model.add(
         tf.layers.dense({
             units: 64,
@@ -221,12 +223,49 @@ function configureNeuralNetAndTrain(trainData) {
         })
     );
     
+    // Camada oculta 2
+    // - 32 neurônios (mais estreita de novo, destilando as informações mais importantes)
+    //   Exemplo: De muitos sinais, mantém apenas os padrões mais fortes
+    // - activation: 'relu'
     model.add(
         tf.layers.dense({
             units: 32,
             activation: 'relu'
         })
     );
+
+    // Camada de saída
+    // - 1 neurônio porque vamos retornar apenas uma pontuação de recomendação
+    // - activation: 'sigmoid' comprime o resultado para o intervalo 0–1
+    //   Exemplo: 0.9 = recomendação forte, 0.1 = recomendação fraca
+    model.add(
+        tf.layers.dense({
+            units: 1,
+            activation: 'sigmoid'
+        })
+    );
+
+    model.compile({
+        optimizer: tf.train.adam(0.01),
+        loss: 'binaryCrossentropy',
+        metrics: ['accuracy']
+    });
+
+    await model.fit(trainData.xs, trainData.ys, {
+        epochs: 100,
+        batchSize: 32,
+        shuffle: true,
+        callbacks: {
+            onEpochEnd: (epoch, logs) => {
+                postMessage({
+                    type: workerEvents.trainingLog,
+                    epoch: epoch,
+                    loss: logs.loss,
+                    accuracy: logs.acc
+                });
+            }
+        }
+    });
 }
 
 async function trainModel({ users }) {
@@ -237,8 +276,7 @@ async function trainModel({ users }) {
     const context = makeContext(products, users);
     _globalCtx = context;
     const trainData = createTrainingData(context);
-    _model = configureNeuralNetAndTrain(trainData);
-    debugger
+    _model = await configureNeuralNetAndTrain(trainData);
 
     postMessage({ type: workerEvents.progressUpdate, progress: { progress: 100 } });
     postMessage({ type: workerEvents.trainingComplete });
