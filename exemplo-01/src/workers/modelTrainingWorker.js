@@ -2,7 +2,14 @@ import 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js';
 import { workerEvents } from '../events/constants.js';
 
 let _globalCtx = {};
-let _model = null
+let _model = null;
+const WEIGHTS = {
+    category: 0.3,
+    color: 0.2,
+    price: 0.2,
+    seller: 0.2,
+    age: 0.1
+}
 
 // 🔢 Normalize continuous values (price, age) to 0–1 range
 // Why? Keeps all features balanced so no one dominates training
