@@ -15,7 +15,7 @@ const WEIGHTS = {
 // Why? Keeps all features balanced so no one dominates training
 // Formula: (val - min) / (max - min)
 // Example: price=129.99, minPrice=39.99, maxPrice=199.99 → 0.56
-const normalize = (value, min, max) => (value - min) / ((max - min) || 1)
+const normalize = (value, min, max) => (value - min) / ((max - min) || 1);
 
 function makeContext(products, users) {
     const ages = users.map(u => u.age)
@@ -45,29 +45,29 @@ function makeContext(products, users) {
     const ageSums = {}
     const ageCounts = {}
 
-    users.forEach(user => {
-        user.purchases.forEach(p => {
-            ageSums[p.name] = (ageSums[p.name] || 0) + user.age
-            ageCounts[p.name] = (ageCounts[p.name] || 0) + 1
-        })
-    })
+    users.forEach((user) => {
+        user.purchases.forEach((product) => {
+            ageSums[product.name] = (ageSums[product.name] || 0) + user.age;
+            ageCounts[product.name] = (ageCounts[product.name] || 0) + 1;
+        });
+    });
 
-    const productAvgAgeNorm = Object.fromEntries(
-        products.map(product => {
-            const avg = ageCounts[product.name] ?
+    const productAverageAgeNormalized = Object.fromEntries(
+        products.map((product) => {
+            const average = ageCounts[product.name] ?
                 ageSums[product.name] / ageCounts[product.name] :
-                midAge
-
-            return [product.name, normalize(avg, minAge, maxAge)]
+                midAge;
+            
+            return [product.name, normalize(average, minAge, maxAge)];
         })
-    )
+    );
 
     return {
         products,
         users,
         colorsIndex,
         categoriesIndex,
-        productAvgAgeNorm,
+        productAverageAgeNormalized,
         minAge,
         maxAge,
         minPrice,
@@ -75,7 +75,7 @@ function makeContext(products, users) {
         numCategories: categories.length,
         numColors: colors.length,
         // price + age + colors + categories
-        dimentions: 2 + categories.length + colors.length
+        dimensions: 2 + categories.length + colors.length
     }
 }
 
