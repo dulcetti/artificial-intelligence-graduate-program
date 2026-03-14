@@ -201,6 +201,11 @@ const exampleUser = {
 function configureNeuralNetAndTrain(trainData) {
     const model = tf.sequential();
 
+    // Camada de entrada
+    // - inputShape: Número de features por exemplo de treino (trainData.inputDim)
+    //   Exemplo: Se o vetor produto + usuário = 20 números, então inputDim = 20
+    // - units: 128 neurônios (muitos "olhos" para detectar padrões)
+    // - activation: 'relu' (mantém apenas sinais positivos, ajuda a aprender padrões não-lineares)
     model.add(
         tf.layers.dense({
             inputShape: [trainData.inputDimension],
