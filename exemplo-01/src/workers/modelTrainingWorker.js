@@ -95,7 +95,7 @@ function encodeProduct(product, context) {
 
     const age = tf.tensor1d([
         (
-            context.productAvgAgeNorm[product.name] ?? 0.5
+            context.productAverageAgeNormalized[product.name] ?? 0.5
         ) * WEIGHTS.age
     ])
 
@@ -126,9 +126,18 @@ function encodeUser(user, context) {
             .mean(0)
             .reshape([
                 1,
-                context.dimentions
+                context.dimensions
             ])
     }
+}
+
+
+
+function createTrainingData(context) {
+    context.users.forEach((user) => {
+        const userVector = encodeUser(user, context);
+        debugger
+    });
 }
 
 async function trainModel({ users }) {
@@ -136,8 +145,9 @@ async function trainModel({ users }) {
     postMessage({ type: workerEvents.progressUpdate, progress: { progress: 1 } });
     const products = await (await fetch('/data/products.json')).json()
 
-    const context = makeContext(products, users)
-    debugger
+    const context = makeContext(products, users);
+    _globalCtx = context;
+    const trainData = createTrainingData(context);
 
     postMessage({ type: workerEvents.progressUpdate, progress: { progress: 100 } });
     postMessage({ type: workerEvents.trainingComplete });
