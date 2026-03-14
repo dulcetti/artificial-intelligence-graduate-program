@@ -79,6 +79,8 @@ function makeContext(products, users) {
     }
 }
 
+const oneHotWeighted = (index, length, weight) =>
+    tf.oneHot(index, length).cast('float32').mul(weight)
 
 async function trainModel({ users }) {
     console.log('Training model with users:', users);
