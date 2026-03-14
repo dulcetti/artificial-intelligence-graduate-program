@@ -212,7 +212,21 @@ function configureNeuralNetAndTrain(trainData) {
             units: 128,
             activation: 'relu'
         })
-    )
+    );
+    
+    model.add(
+        tf.layers.dense({
+            units: 64,
+            activation: 'relu'
+        })
+    );
+    
+    model.add(
+        tf.layers.dense({
+            units: 32,
+            activation: 'relu'
+        })
+    );
 }
 
 async function trainModel({ users }) {
