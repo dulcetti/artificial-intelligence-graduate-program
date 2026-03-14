@@ -157,6 +157,51 @@ function createTrainingData(context) {
     }
 }
 
+// ====================================================================
+// 📌 Exemplo de como um usuário é ANTES da codificação
+// ====================================================================
+/*
+const exampleUser = {
+    id: 201,
+    name: 'Rafael Souza',
+    age: 27,
+    purchases: [
+        { id: 8, name: 'Boné Estiloso', category: 'acessórios', price: 39.99, color: 'preto' },
+        { id: 9, name: 'Mochila Executiva', category: 'acessórios', price: 159.99, color: 'cinza' }
+    ]
+};
+*/
+
+// ====================================================================
+// 📌 Após a codificação, o modelo NÃO vê nomes ou palavras.
+// Ele vê um VETOR NUMÉRICO (todos normalizados entre 0–1).
+// Exemplo: [preço_normalizado, idade_normalizada, cat_one_hot..., cor_one_hot...]
+//
+// Suponha categorias = ['acessórios', 'eletrônicos', 'vestuário']
+// Suponha cores      = ['preto', 'cinza', 'azul']
+//
+// Para Rafael (idade 27, categoria: acessórios, cores: preto/cinza),
+// o vetor poderia ficar assim:
+//
+// [
+//   0.45,            // peso do preço normalizado
+//   0.60,            // idade normalizada
+//   1, 0, 0,         // one-hot de categoria (acessórios = ativo)
+//   1, 0, 0          // one-hot de cores (preto e cinza ativos, azul inativo)
+// ]
+//
+// São esses números que vão para a rede neural.
+// ====================================================================
+
+
+
+// ====================================================================
+// 🧠 Configuração e treinamento da rede neural
+// ====================================================================
+function configureNeuralNetAndTrain(trainData) {
+
+}
+
 async function trainModel({ users }) {
     console.log('Training model with users:', users);
     postMessage({ type: workerEvents.progressUpdate, progress: { progress: 1 } });
@@ -165,6 +210,7 @@ async function trainModel({ users }) {
     const context = makeContext(products, users);
     _globalCtx = context;
     const trainData = createTrainingData(context);
+    _model = configureNeuralNetAndTrain(trainData);
     debugger
 
     postMessage({ type: workerEvents.progressUpdate, progress: { progress: 100 } });
