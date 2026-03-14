@@ -199,7 +199,15 @@ const exampleUser = {
 // 🧠 Configuração e treinamento da rede neural
 // ====================================================================
 function configureNeuralNetAndTrain(trainData) {
+    const model = tf.sequential();
 
+    model.add(
+        tf.layers.dense({
+            inputShape: [trainData.inputDimension],
+            units: 128,
+            activation: 'relu'
+        })
+    )
 }
 
 async function trainModel({ users }) {
