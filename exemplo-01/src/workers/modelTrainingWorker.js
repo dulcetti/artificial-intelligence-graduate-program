@@ -80,7 +80,41 @@ function makeContext(products, users) {
 }
 
 const oneHotWeighted = (index, length, weight) =>
-    tf.oneHot(index, length).cast('float32').mul(weight)
+    tf.oneHot(index, length).cast('float32').mul(weight);
+
+function encodeProduct(product, context) {
+    // normalizando dados para ficar de 0 a 1 e
+    // aplicar o peso na recomendação
+    const price = tf.tensor1d([
+        normalize(
+            product.price,
+            context.minPrice,
+            context.maxPrice
+        ) * WEIGHTS.price
+    ])
+
+    const age = tf.tensor1d([
+        (
+            context.productAvgAgeNorm[product.name] ?? 0.5
+        ) * WEIGHTS.age
+    ])
+
+    const category = oneHotWeighted(
+        context.categoriesIndex[product.category],
+        context.numCategories,
+        WEIGHTS.category
+    )
+
+    const color = oneHotWeighted(
+        context.colorsIndex[product.color],
+        context.numColors,
+        WEIGHTS.color
+    )
+
+    return tf.concat1d(
+        [price, age, category, color]
+    )
+}
 
 async function trainModel({ users }) {
     console.log('Training model with users:', users);
