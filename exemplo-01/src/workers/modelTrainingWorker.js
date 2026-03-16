@@ -350,6 +350,10 @@ function recommend({ user }) {
         }
     });
     const sortedItems = recommendations.sort((prev, next) => next.score - prev.score);
+
+    /*
+    8️⃣ Envie a lista ordenada de produtos recomendados para a thread principal (a UI pode exibi-los agora).
+    */
     postMessage({
         type: workerEvents.recommend,
         user,
