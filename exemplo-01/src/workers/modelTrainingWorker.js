@@ -288,6 +288,13 @@ async function trainModel({ users }) {
     const products = await (await fetch('/data/products.json')).json()
 
     const context = makeContext(products, users);
+    context.productVectors = products.map((product) => {
+        return {
+            name: product.name,
+            meta: { ...product },
+            vector: encodeProduct(product, context).dataSync()
+        }
+    });
     _globalCtx = context;
     const trainData = createTrainingData(context);
     _model = await configureNeuralNetAndTrain(trainData);
