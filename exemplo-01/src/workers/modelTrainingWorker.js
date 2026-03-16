@@ -341,6 +341,14 @@ function recommend({ user }) {
     5️⃣ Extraia as pontuações para um array JS normal.
     */
     const scores = predictions.dataSync();
+
+    const recommendations = context.productVectors.map((item) => {
+        return {
+            ...item.meta,
+            name: item.name,
+            score: scores[index] // previsao de modelo para este produto
+        }
+    });
     debugger
     // postMessage({
     //     type: workerEvents.recommend,
