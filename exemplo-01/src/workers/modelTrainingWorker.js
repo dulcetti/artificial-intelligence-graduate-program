@@ -278,6 +278,8 @@ async function configureNeuralNetAndTrain(trainData) {
             }
         }
     });
+
+    return model;
 }
 
 async function trainModel({ users }) {
