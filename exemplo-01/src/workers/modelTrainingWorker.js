@@ -136,7 +136,9 @@ function createTrainingData(context) {
     const inputs = [];
     const labels = [];
 
-    context.users.forEach((user) => {
+    context.users
+        .filter((user) => user.purchases.length)
+        .forEach((user) => {
         const userVector = encodeUser(user, context).dataSync();
         context.products.forEach((product) => {
             const productVector = encodeProduct(product, context).dataSync();
