@@ -128,6 +128,16 @@ function encodeUser(user, context) {
                 context.dimensions
             ])
     }
+
+    return tf.concat1d([
+        tf.zeros([1]), // price ignored
+        tf.tensor1d([
+            normalize(user.age, context.minAge, context.maxAge)
+            * WEIGHTS.age
+        ]),
+        tf.zeros([context.numCategories]), // Categories ignored
+        tf.zeros([context.numColors]), // Colors ignored
+    ]).reshape([1, context.dimensions])
 }
 
 
@@ -284,7 +294,8 @@ async function trainModel({ users }) {
     postMessage({ type: workerEvents.trainingComplete });
 }
 function recommend({ user }) {
-
+    const userTensor = encodeUser(user, _globalCtx).dataSync();
+    debugger
     // postMessage({
     //     type: workerEvents.recommend,
     //     user,
