@@ -342,21 +342,21 @@ function recommend({ user }) {
     */
     const scores = predictions.dataSync();
 
-    const recommendations = context.productVectors.map((item) => {
+    const recommendations = context.productVectors.map((item, index) => {
         return {
             ...item.meta,
             name: item.name,
             score: scores[index] // previsao de modelo para este produto
         }
     });
-    debugger
-    // postMessage({
-    //     type: workerEvents.recommend,
-    //     user,
-    //     recommendations: sortedItems
-    // });
-
+    const sortedItems = recommendations.sort((prev, next) => next.score - prev.score);
+    postMessage({
+        type: workerEvents.recommend,
+        user,
+        recommendations: sortedItems
+    });
 }
+
 const handlers = {
     [workerEvents.trainModel]: trainModel,
     [workerEvents.recommend]: recommend,
