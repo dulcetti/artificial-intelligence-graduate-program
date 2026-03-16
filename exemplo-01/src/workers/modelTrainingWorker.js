@@ -303,8 +303,20 @@ async function trainModel({ users }) {
     postMessage({ type: workerEvents.trainingComplete });
 }
 function recommend({ user }) {
-    const userTensor = encodeUser(user, _globalCtx).dataSync();
+    if (!_model) {
+        return;
+    }
+    const context = _globalCtx;
     debugger
+    /*
+    Converte o usuário fornecido no vetor de features codificadas (preço ignorado, idade normalizada e categorias ignoradas)
+    Isso transforma as informações do usuário no mesmo formato numérico que foi usado para treinar o modelo
+    */
+    const userVector = encodeUser(user, context).dataSync();
+    const inputs = context.productVectors.map(({ vector }) => {
+        return [...userVector, ...vector]
+    });
+    const inputTensor = tf.tensor2d(inputs);
     // postMessage({
     //     type: workerEvents.recommend,
     //     user,
