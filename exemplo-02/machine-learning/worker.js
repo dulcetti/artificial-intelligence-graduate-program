@@ -84,6 +84,8 @@ function* processPrediction({ boxes, scores, classes }, width, height) {
     }
 }
 
+loadModelAndLabels();
+
 self.onmessage = async ({ data }) => {
     if (data.type !== 'predict') return
     if (!_model) return;
