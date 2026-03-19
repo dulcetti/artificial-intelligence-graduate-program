@@ -33,6 +33,31 @@ function preprocessImage(input) {
     });
 }
 
+async function runInference(tensor) {
+    const output = await _model.executeAsync(tensor);
+    tf.dispose(tensor);
+    /*
+    Assume que as 3 primeiras saídas são: caixas (boxes), pontuações (scores) e classes
+    */
+
+    const [boxes, scores, classes] = output.slice(0, 3);
+    const [boxesData, scoresData, classesData] = await Promise.all(
+        [
+            boxes.data(),
+            scores.data(),
+            classes.data(),
+        ]
+    )
+
+    output.forEach(t => t.dispose());
+    
+    return {
+        boxes: boxesData,
+        scores: scoresData,
+        classes: classesData
+    }
+}
+
 self.onmessage = async ({ data }) => {
     if (data.type !== 'predict') return
 
