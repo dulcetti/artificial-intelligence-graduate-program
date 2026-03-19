@@ -69,6 +69,17 @@ async function runInference(tensor) {
         classes: classesData
     }
 }
+
+/**
+ * Filtra e processa as predições:
+ * - Aplica o limiar de confiança (CLASS_THRESHOLD)
+ * - Filtra apenas a classe desejada (exemplo: 'kite')
+ * - Converte coordenadas normalizadas para pixels reais
+ * - Calcula o centro do bounding box
+ *
+ * Uso de generator (function*):
+ * - Permite enviar cada predição assim que processada, sem criar lista intermediária
+ */
 function* processPrediction({ boxes, scores, classes }, width, height) {
     for (let index = 0; index < scores.length; index++) {
         if (scores[index] < CLASS_THRESHOLD) continue;
@@ -108,10 +119,10 @@ self.onmessage = async ({ data }) => {
     const inferenceResults = await runInference(input);
 
     for (const prediction of processPrediction(inferenceResults, width, height)) {
-    postMessage({
-        type: 'prediction',
+        postMessage({
+            type: 'prediction',
             ...prediction
-    });
+        });
     }
 };
 
