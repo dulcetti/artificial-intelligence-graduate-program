@@ -86,15 +86,19 @@ function* processPrediction({ boxes, scores, classes }, width, height) {
 
 self.onmessage = async ({ data }) => {
     if (data.type !== 'predict') return
+    if (!_model) return;
 
+    const input = preprocessImage(data.image);
+    const { width, height } = data.image;
+
+    const inferenceResults = await runInference(input);
+
+    for (const prediction of processPrediction(inferenceResults, width, height)) {
     postMessage({
         type: 'prediction',
-        x: 400,
-        y: 400,
-        score: 0
+            ...prediction
     });
-
-
+    }
 };
 
 console.log('🧠 YOLOv5n Web Worker initialized');
