@@ -3,6 +3,7 @@
     "es6": true
   },
   "parserOptions": {
+    "ecmaVersion": "latest", 
     "sourceType": "module"
   },
   "rules": {
