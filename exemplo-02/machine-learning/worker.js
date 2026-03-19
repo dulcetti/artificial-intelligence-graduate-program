@@ -22,6 +22,16 @@ async function loadModelAndLabels() {
     postMessage({ type: 'model-loaded' })
     
 }
+function preprocessImage(input) {
+    return tf.tidy(() => {
+        const image = tf.browser.fromPixels(input);
+
+        return tf.image
+            .resizeBilinear(image, [INPUT_MODEL_DIMENSIONS, INPUT_MODEL_DIMENSIONS])
+            .div(255)
+            .expandDims(0);
+    });
+}
 
 self.onmessage = async ({ data }) => {
     if (data.type !== 'predict') return
