@@ -22,6 +22,18 @@ async function loadModelAndLabels() {
     postMessage({ type: 'model-loaded' })
     
 }
+
+/**
+ * Pré-processa a imagem para o formato aceito pelo YOLO:
+ * - tf.browser.fromPixels(): converte ImageBitmap/ImageData para tensor [H, W, 3]
+ * - tf.image.resizeBilinear(): redimensiona para [INPUT_DIM, INPUT_DIM]
+ * - .div(255): normaliza os valores para [0, 1]
+ * - .expandDims(0): adiciona dimensão batch [1, H, W, 3]
+ *
+ * Uso de tf.tidy():
+ * - Garante que tensores temporários serão descartados automaticamente,
+ *   evitando vazamento de memória.
+ */
 function preprocessImage(input) {
     return tf.tidy(() => {
         const image = tf.browser.fromPixels(input);
