@@ -31,5 +31,12 @@
             topK,
             initialPrompts,
         })
+
+        const responseStream = await session.promptStreaming([
+            {
+                role: 'user',
+                content: question
+            }
+        ])
   })();
 </script>
