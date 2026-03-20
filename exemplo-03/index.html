@@ -24,5 +24,12 @@
 
         const question = 'Quem inventou o JavaScript?'
         output.innerHTML = "Gerando resposta...";
+
+        const session = await LanguageModel.create({
+            expectedInputLanguages: ["pt"],
+            temperature,
+            topK,
+            initialPrompts,
+        })
   })();
 </script>
