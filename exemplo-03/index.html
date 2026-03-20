@@ -1,0 +1,14 @@
+<script src="https://cdn.jsdelivr.net/npm/markdown@0.5.0/lib/markdown.min.js"></script>
+
+<output id="output"></output>
+<button id="btn">Carregar modelo</button>
+
+<script>
+  const output = document.getElementById('output');
+  (async () => {
+    console.log(await LanguageModel.availability());
+    console.log({LanguageModel});
+    const params = await LanguageModel.params();
+    console.info({params});
+  })();
+</script>
