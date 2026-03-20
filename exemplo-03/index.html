@@ -7,10 +7,19 @@
 
 <script>
   const output = document.getElementById('output');
+
   (async () => {
-    console.log(await LanguageModel.availability());
-    console.log({LanguageModel});
     const params = await LanguageModel.params();
-    console.info({params});
+        console.log("Language Model Params:", params);
+
+        const temperature = params.defaultTemperature
+        const topK = params.defaultTopK
+
+        const initialPrompts = [
+            {
+                role: 'system',
+                content: `Você é um assistente de IA que responde de forma clara e objetiva.`
+            }
+        ]
   })();
 </script>
