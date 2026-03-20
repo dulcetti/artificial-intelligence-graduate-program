@@ -38,5 +38,14 @@
                 content: question
             }
         ])
+        output.innerHTML = ""
+        let fullText = ""
+        for await (const token of responseStream) {
+            fullText += token;
+            output.innerHTML = markdown.toHTML(fullText);
+
+            // console.log(token)
+        }
   })();
+
 </script>
