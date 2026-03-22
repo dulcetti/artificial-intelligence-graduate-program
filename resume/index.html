@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume converter</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>🗒️ Resume converter</h1>
+
+    <form id="question-form">
+      <div class="parameters">
+        <div class="param-group">
+          <label for="resume">Your Resume PDF:</label>
+          <input type="file" id="resume" name="resume">
+          <div class="param-description">Send your resume in PDF format</div>
+        </div>
+      </div>
+
+      <label for="result">Your resume formated:</label>
+      <textarea name="result" id="result" placeholder="Result of your resume..."></textarea>
+
+      <button type="submit" id="ask-button">Enviar</button>
+    </form>
+
+    <footer class="copyright">
+      <address>
+        Bruno Dulcetti - Pós em Engenharia de Software com IA Aplicada - UNIPDS -
+        <span id="year"></span>
+      </address>
+    </footer>
+  </div>
+
+  <script type="module" src="./index.js"></script>
+</body>
+
+</html>
