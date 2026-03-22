@@ -13,15 +13,6 @@ const elements = {
 };
 
 async function setupEventListeners() {
-  // Update display values for range inputs
-  elements.temperature.addEventListener("input", (e) => {
-    elements.temperatureValue.textContent = e.target.value;
-  });
-
-  elements.topK.addEventListener("input", (e) => {
-    elements.topKValue.textContent = e.target.value;
-  });
-
   elements.form.addEventListener("submit", async function (event) {
     event.preventDefault();
 
@@ -97,8 +88,8 @@ async function* askAI(question, temperature, topK) {
       {
         role: "system",
         content: `
-                Você é um assistente de IA que responde de forma clara e objetiva.
-                Responda sempre em formato de texto ao invés de markdown`,
+          Você é um assistente de IA que responde de forma clara e objetiva.
+          Responda sempre em formato de texto ao invés de markdown`,
       },
     ],
   });
@@ -124,6 +115,8 @@ async function* askAI(question, temperature, topK) {
 }
 
 async function checkRequirements() {
+  const availability = await LanguageModel.availability({ languages: ["pt"] });
+  console.log("Language Model Availability:", availability);
   const errors = [];
   const returnResults = () => (errors.length ? errors : null);
 
@@ -143,8 +136,6 @@ async function checkRequirements() {
     return returnResults();
   }
 
-  const availability = await LanguageModel.availability({ languages: ["pt"] });
-  console.log("Language Model Availability:", availability);
   if (availability === "available") {
     return returnResults();
   }
@@ -211,16 +202,7 @@ async function checkRequirements() {
     defaultTopK:3
     maxTemperature:2
     maxTopK:128
-    */
+  */
 
-  elements.topK.max = params.maxTopK;
-  elements.topK.min = 1;
-  elements.topK.value = params.defaultTopK;
-  elements.topKValue.textContent = params.defaultTopK;
-
-  elements.temperatureValue.textContent = params.defaultTemperature;
-  elements.temperature.max = params.maxTemperature;
-  elements.temperature.min = 0;
-  elements.temperature.value = params.defaultTemperature;
   return setupEventListeners();
 })();
