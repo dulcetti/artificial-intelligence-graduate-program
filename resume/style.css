@@ -83,39 +83,21 @@ input[type="file"]:hover {
   display: block;
 }
 
-.value-display {
-  text-align: center;
-  font-weight: bold;
-  color: #34d399;
-  margin-top: 5px;
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 
-.param-description {
-  font-size: 0.75em;
-  color: #9ca3af;
-  margin-top: 5px;
-  line-height: 1.4;
+.hint {
+  color: #888;
+  font-size: 0.8rem;
 }
 
-textarea {
-  width: 100%;
-  min-height: 120px;
-  padding: 15px;
-  border: 2px solid #404040;
-  border-radius: 8px;
-  font-size: 1em;
-  font-family: inherit;
-  resize: vertical;
-  transition: border-color 0.3s;
-  margin-bottom: 20px;
-  background: #1a1a1a;
-  color: #34d399;
-}
-
-textarea:focus {
-  outline: none;
-  border-color: #34d399;
-  box-shadow: 0 0 10px rgba(52, 211, 153, 0.4);
+.sections-grid {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .section-toggle {
